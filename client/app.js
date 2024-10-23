@@ -4,7 +4,9 @@ const messagesList = document.querySelector('#messages-list');
 const addMessageForm = document.querySelector('#add-messages-form');
 const userNameInput = document.querySelector('#username');
 const messageContentInput = document.querySelector('#message-content');
+
 let userName = '';
+
 // login form
 loginForm.addEventListener('submit', e => login(e));
 const login = (e) => {
@@ -17,6 +19,7 @@ const login = (e) => {
         messagesSection.classList.add('show');
     }
 };
+
 // send message
 addMessageForm.addEventListener('submit', e => sendMessage(e));
 const sendMessage = (e) => {
@@ -28,6 +31,7 @@ const sendMessage = (e) => {
         messageContentInput.value = '';
     }
 };
+
 const addMessage = (author, content) => {
     const message = document.createElement('li');
     message.classList.add('message');
