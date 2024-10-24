@@ -3,8 +3,6 @@ const path = require('path');
 const app = express();
 const socket = require('socket.io');
 
-//const app = express();
-
 const server = app.listen(8000, () => {
     console.log('server on port 8000');
 });
@@ -19,11 +17,22 @@ io.on('connection', (socket) => {
         messages.push(message);
         socket.broadcast.emit('message', message); // send message to all sockets except the one who wrote it
     });
-    socket.on('disconnect', () => { console.log('Oh, socket ' + socket.id + ' has left') });
+    socket.on('user', (user) => { // check if there is a new user
+        users.push(user); // and add them to array
+        console.log('Oh, I\'ve got new user: ' + socket.id);
+    })
+    socket.on('disconnect', (user) => { 
+        console.log('Oh, socket ' + socket.id + ' has left');
+        user = socket.id;
+        userIndex = users.indexOf(user);
+        users.splice(userIndex, 1);
+        console.log('users:', users);
+    });
     console.log('I\'ve added a listener on message and disconnect events \n');
 });
 
 const messages = [];
+const users = [];
 
 app.use(express.static(path.join(__dirname, '/client/')));
 

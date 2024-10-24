@@ -23,6 +23,7 @@ const login = (e) => {
         alert('What is your name?')
     } else {
         userName = userNameInput.value;
+        socket.emit('user', { name: userName, id: socket.id });
         loginForm.classList.remove('show');
         messagesSection.classList.add('show');
     }
