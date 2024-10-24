@@ -19,12 +19,15 @@ io.on('connection', (socket) => {
     });
     socket.on('user', (user) => { // check if there is a new user
         users.push(user); // and add them to array
-        console.log('Oh, I\'ve got new user: ' + socket.id);
+        console.log('Oh, I\'ve got new user: ' + user.id);
+        socket.broadcast.emit('newUser', { author: 'Chat Bot', content: user.name + ' has joined the conversation!' });
+        console.log('users:', users);
     })
-    socket.on('disconnect', (user) => { 
+    socket.on('disconnect', () => {
         console.log('Oh, socket ' + socket.id + ' has left');
-        user = socket.id;
-        userIndex = users.indexOf(user);
+        const userIndex = users.findIndex(user => user.id === socket.id);
+        const userLogin = users[userIndex].name;
+        socket.broadcast.emit('removeUser', { author: 'Chat Bot', content: userLogin + ' has left the conversation :(' });
         users.splice(userIndex, 1);
         console.log('users:', users);
     });
